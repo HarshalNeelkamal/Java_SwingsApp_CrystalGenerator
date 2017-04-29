@@ -1,13 +1,9 @@
 package edu.neu.csye6200.cacrystal;
 
 import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
+import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.HashMap;
-import java.util.Observable;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -26,6 +22,7 @@ public class CANorthPanel{
 	private JComboBox<String> ruleBox = null;
 	private JComboBox<String> startOptions = null;
 	private JComboBox<String> colorOptions = null; 
+	private JComboBox<String> background = null; 
 	private JPanel panel = null;
 	private JPanel upperPanel = null;
 	private JPanel lowerPanel = null;
@@ -38,8 +35,8 @@ public class CANorthPanel{
 
 		panel = new JPanel(new GridLayout(2, 1));
 		upperPanel = new JPanel(new GridLayout(1, 6));
-		lowerPanel = new JPanel(new GridLayout(1, 6));
-		
+		lowerPanel = new JPanel(new GridLayout(1, 5));
+				
 		startButton = new JButton("Start");
 		pauseButton = new JButton("Pause");
 		resetButton = new JButton("Reset");
@@ -48,33 +45,47 @@ public class CANorthPanel{
 		slider = new JSlider();
 		cellDime = new JTextField();
 		ruleBox = new JComboBox<String>();
+		background = new JComboBox<String>();
 		startOptions = new JComboBox<String>();
 		colorOptions = new JComboBox<String>();
 		
+		cellDime.setColumns(4);
 		pauseButton.setEnabled(false);
 		setSliderVisibility(false, 0);
+		Countlabel.setFont(new Font("Arial", Font.BOLD, 20));
 		setPhaseCount(0);
-		flakeSteps.setHorizontalAlignment(SwingConstants.RIGHT);
-	
-
-
+		flakeSteps.setHorizontalAlignment(SwingConstants.CENTER);
+		
 		ruleBox.addItem("Hex-1");
 		ruleBox.addItem("Hex-2");
+		ruleBox.addItem("Hex-3");
 		ruleBox.addItem("Square");
 		
 		startOptions.addItem("single");
 		startOptions.addItem("double");
 		startOptions.addItem("tripple");
 		
+		colorOptions.addItem("Classic");
 		colorOptions.addItem("Blue");
 		colorOptions.addItem("Green");
 		colorOptions.addItem("Red");
+		
+		background.addItem("Black-Background");
+		background.addItem("White-Background");
 		
 		slider.setMinimum(0);
 
 		initialize();
 	}
 	
+	public JComboBox<String> getBackground() {
+		return background;
+	}
+
+	public void setBackground(JComboBox<String> background) {
+		this.background = background;
+	}
+
 	public JComboBox<String> getStartOptions() {
 		return startOptions;
 	}
@@ -168,7 +179,6 @@ public class CANorthPanel{
 	private void initialize(){
 		panel.setBackground(Color.GRAY);
 		
-		
 		upperPanel.add(resetButton,0,0);
 		upperPanel.add(pauseButton,1,0);
 		upperPanel.add(startButton,2,0);
@@ -176,11 +186,15 @@ public class CANorthPanel{
 		upperPanel.add(flakeSteps,4,0);
 		upperPanel.add(ruleBox,5,0);
 		
-		lowerPanel.add(colorOptions,0);
-		lowerPanel.add(startOptions,0);
-		lowerPanel.add(slider, 0);
-		lowerPanel.add(Countlabel, 0);
+		lowerPanel.add(background,0,0 );
+		lowerPanel.add(colorOptions,1,0);
+		lowerPanel.add(startOptions,2,0);
+		lowerPanel.add(slider,3,0);
+		lowerPanel.add(Countlabel,4,0);
 		
+		upperPanel.setLayout(new FlowLayout());
+		lowerPanel.setLayout(new FlowLayout());
+
 		panel.add(upperPanel);
 		panel.add(lowerPanel);
 		

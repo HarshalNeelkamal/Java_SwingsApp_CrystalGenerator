@@ -1,9 +1,9 @@
 package edu.neu.csye6200.cacrystal;
 
-public class CARuleSqu1 extends CARule2{
+public class CARuleHex3 extends CARule2{//extended class for rule Hex-3
 
 	@Override
-	public CAFlake getNextFlake(CAFlake previousFlake) {//extended class for rule Square 
+	public CAFlake getNextFlake(CAFlake previousFlake) {
 		CAFlake nextFlake = new CAFlake(previousFlake.getFlake()[0].length);
 		
 		for(int i = 1 ; i < nextFlake.getFlake().length -1 ;i++ ){
@@ -49,28 +49,45 @@ public class CARuleSqu1 extends CARule2{
 		
 		return nextFlake;
 	}
-	private static boolean returnFlakeCellWithNeighoubrs(boolean top,boolean topLeft,boolean topRight,boolean bottom,boolean bottomLeft,boolean bottomRight,boolean left,boolean right,int position) {
+	private static boolean returnFlakeCellWithNeighoubrs(boolean top,boolean topLeft,boolean topRight,boolean bottom,boolean bottomLeft,boolean bottomRight,boolean left,boolean right,int position) {boolean value = false;
+	
 		int cnt = 0;
-		boolean value = false;
-		if(top == true){
-			cnt++;
+		value = false;
+		
+		cnt = 0;
+		value = false;
+		if(position == 0){
+			//ignore upper-left and upper-right
+			
+			if(bottomLeft == true){
+				cnt++;
+			}
+			if(bottomRight == true){
+				cnt++;
+			}
+			if(top == true){
+				cnt++;
+			}
+			
+		}else{
+			//ignore lower-left and lower-right
+			
+			if(topLeft == true){
+				cnt++;
+			}
+			if(topRight == true){
+				cnt++;
+			}
+			if(bottom == true){
+				cnt++;
+			}
 		}
-		if(bottom == true){
-			cnt++;
-		}
-		if(left == true){
-			cnt++;
-		}
-		if(right == true){
-			cnt++;
-		}
+		
 		if(cnt == 1){
-			value = true;
+			value = true; 	
 		}
 	
 	return value;
 }
-
-	
 
 }

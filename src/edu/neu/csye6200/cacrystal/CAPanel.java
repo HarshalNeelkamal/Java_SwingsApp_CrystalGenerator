@@ -12,7 +12,17 @@ public class CAPanel extends JPanel{
 	private CAFlake flake = null;
 	private String presentRule = "";
 	private String color = "Blue";
+	private String backgroundColor = "Black-Background";
+
 	
+	public String getBackgroundColor() {
+		return backgroundColor;
+	}
+
+	public void setBackgroundColor(String backgroundColor) {
+		this.backgroundColor = backgroundColor;
+	}
+
 	public String getColor() {
 		return color;
 	}
@@ -21,8 +31,9 @@ public class CAPanel extends JPanel{
 		this.color = color;
 	}
 
-	public CAPanel(int width,int height){
-		flake = new CAFlake(width, height);
+	public CAPanel(int dimension){
+		flake = new CAFlake(dimension);
+		System.out.println("panel initialised");
 	}
 	
 	public CAFlake getFlake() {
@@ -42,15 +53,16 @@ public class CAPanel extends JPanel{
 	}
 	
 	public void paint(Graphics g) {
-		System.out.println("repaint");
 		drawCanvas(g);
 	}
 	
 	private void drawCanvas(Graphics g){
 		Graphics2D g2d = (Graphics2D) g;
 		Dimension size = getSize();
-		
-		g2d.setColor(Color.BLACK);
+		if(backgroundColor == "Black-Background")
+			g2d.setColor(Color.BLACK);
+		else
+			g2d.setColor(Color.WHITE);
 		g2d.fillRect(0, 0, size.width, size.height);
 		int width = flake.getFlake()[0].length;
 		int leastOfTwoDime = size.width > size.height?size.height:size.width;
@@ -61,25 +73,15 @@ public class CAPanel extends JPanel{
 		for(int i=0; i < flake.getFlake().length; i++){
 			for(int j=0; j < flake.getFlake()[i].length; j++){
 				if(flake.getFlake()[i][j].isState() == false){
-					g2d.setColor(Color.black);
+					if(backgroundColor == "Black-Background")
+						g2d.setColor(Color.BLACK);
+					else
+						g2d.setColor(Color.WHITE);
 				}else{
-					switch (color) {
-					case "Blue":
-						g2d.setColor(new Color(255-flake.getFlake()[i][j].getValue(), 255-flake.getFlake()[i][j].getValue(), 235));
-						break;
-					case "Green":
-						g2d.setColor(new Color(255-flake.getFlake()[i][j].getValue(), 235, 255-flake.getFlake()[i][j].getValue()));
-						break;
-					case "Red":
-						g2d.setColor(new Color(235, 255-flake.getFlake()[i][j].getValue(), 255-flake.getFlake()[i][j].getValue()));
-						break;
-
-					default:
-						break;
-					}
+					g2d.setColor(getColorFor(color, i, j));
 				}
 				if(j%2 == 0){
-					if(presentRule == "Hex-1" || presentRule == "Hex-2"){
+					if(presentRule == "Hex-1" || presentRule == "Hex-2" || presentRule == "Hex-3"){
 						g2d.fillRect((cellDime*j)+extraSpaceHorizontal, (cellDime*i)+extraSpaceVertical + cellDime/2 , cellDime, cellDime);
 					}else{
 						g2d.fillRect((cellDime*j)+extraSpaceHorizontal, (cellDime*i)+extraSpaceVertical, cellDime, cellDime);
@@ -88,6 +90,21 @@ public class CAPanel extends JPanel{
 					g2d.fillRect((cellDime*j)+extraSpaceHorizontal, (cellDime*i)+extraSpaceVertical, cellDime, cellDime);
 				}
 			}
+		}
+	}
+	
+	private Color getColorFor(String option,int i,int j){
+		switch (option) {
+		case "Green":
+			return (new Color(125-flake.getFlake()[i][j].getValue(), 125+flake.getFlake()[i][j].getValue(), 125));
+		case "Blue":
+			return (new Color(125-flake.getFlake()[i][j].getValue(), 125, 125+flake.getFlake()[i][j].getValue()));
+		case "Red":
+			return (new Color(200, 125-flake.getFlake()[i][j].getValue(), 125-flake.getFlake()[i][j].getValue()));
+		case "Classic":
+			return (new Color(255-flake.getFlake()[i][j].getClassiqueValue(), 255-flake.getFlake()[i][j].getClassiqueValue(), 220));
+		default:
+			return Color.BLACK;
 		}
 	}
 	

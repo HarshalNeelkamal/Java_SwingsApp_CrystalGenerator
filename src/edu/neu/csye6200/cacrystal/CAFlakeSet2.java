@@ -12,8 +12,6 @@ public class CAFlakeSet2 extends Observable{
 	private CARule2 ruleClass = null; 
 	private String option = "";
 	private static boolean pause = false;
-	private static boolean stopInstruction = false;
-	private int cnt = 0;
 	private int refCount = 0;
 	private boolean inProccess = false;
 	private Timer javaTimer = null;	
@@ -23,7 +21,6 @@ public class CAFlakeSet2 extends Observable{
 	}
 
 	private void startGeneration(){
-		cnt = 0;
 		FlakeCollection.add(0,ruleClass.initializeFlake(stepCount*2,option));
 		action(FlakeCollection.get(0));
 		javaTimer = new Timer();
@@ -35,10 +32,9 @@ public class CAFlakeSet2 extends Observable{
 						newFlakeSnippet();
 					}
 				}
-			}, 100, 200);
+			}, 100,200);
 	}
 
-	
 	private void action(CAFlake caFlake) {
 		// TODO Auto-generated method stub
 		setChanged();
@@ -46,7 +42,7 @@ public class CAFlakeSet2 extends Observable{
 	}
 	
 	private void setBlankFrame(){
-		CAFlake blankFlake = new CAFlake(65, 65);
+		CAFlake blankFlake = new CAFlake(65);
 		setChanged();
 		notifyObservers(blankFlake);
 	}
@@ -56,7 +52,10 @@ public class CAFlakeSet2 extends Observable{
 		return FlakeCollection.size()-1;
 	}
 	public void stopAction() {
-		stopInstruction = true;
+		if(javaTimer != null){
+			javaTimer.cancel();
+			javaTimer = null;
+		}
 	}
 	public void startAction(int stepCount, CARule2 ruleClass, String option) {
 		this.stepCount = stepCount;
@@ -99,7 +98,6 @@ public class CAFlakeSet2 extends Observable{
 			
 			//processing
 				inProccess = true;//prevents any calls from timer while pattern gets generated
-				cnt++;
 				FlakeCollection.add(i,ruleClass.getNextFlake(FlakeCollection.get(i-1)));
 				action(FlakeCollection.get(i));
 				inProccess = false;
@@ -110,7 +108,6 @@ public class CAFlakeSet2 extends Observable{
 				if(javaTimer != null){
 					javaTimer.cancel();
 					javaTimer = null;
-					System.out.println("timer Cancelled");
 					setChanged();
 					notifyObservers();//notifies completion of generation cycle
 				}

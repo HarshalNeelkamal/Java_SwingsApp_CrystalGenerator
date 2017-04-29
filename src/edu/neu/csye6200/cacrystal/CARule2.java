@@ -1,20 +1,22 @@
 package edu.neu.csye6200.cacrystal;
 
+import java.util.Random;
+
 public abstract class CARule2 {
 
 	abstract public CAFlake getNextFlake(CAFlake previousFlake);
 
 	public CAFlake initializeFlake(int dimensions, String option) {
-		CAFlake flake = new CAFlake(dimensions,dimensions);
+		CAFlake flake = new CAFlake(dimensions);
 		if(option == "single"){
 			((flake.getFlake())[dimensions/2][dimensions/2]).setState(true);
 		}else if(option == "double"){
-			((flake.getFlake())[dimensions/2][dimensions/4]).setState(true);
-			((flake.getFlake())[(dimensions/2)][(dimensions/4)*3]).setState(true);
+			((flake.getFlake())[(dimensions/4)][dimensions/4]).setState(true);
+			((flake.getFlake())[(dimensions/4)*3][(dimensions/4)*3]).setState(true);
 		}else{
 			((flake.getFlake())[(dimensions/4)][(dimensions/4)]).setState(true);
-			((flake.getFlake())[(dimensions/4)][(dimensions/4)*3]).setState(true);
-			((flake.getFlake())[(dimensions/4)*3][(dimensions/2)]).setState(true);
+			((flake.getFlake())[(dimensions/2)][(dimensions/4)*3]).setState(true);
+			((flake.getFlake())[(dimensions/4)*3][(dimensions/4)]).setState(true);
 		}
 		return flake;
 	}
@@ -24,10 +26,21 @@ public abstract class CARule2 {
 		int longestFlakeDistance = distance(xc, yc, xlon, ylon);
 		double factor = (double)flakeCellDistance/(double)longestFlakeDistance;
 		int availableRange = 255-value;
-		value = (int) (value + (availableRange*factor)); 
-		if(value < 15){
+		value = (int) (value + (availableRange*factor));
+		if(value <15){
 			value = 15;
 		}
+		if (value > 125) {
+			value = 125;
+		}
+		return value;
+	}
+	protected int cellColorGenerator(){
+		int value = 0;
+		Random r = new Random();
+		int min = 0;
+		int max = 125;
+		value = r.nextInt(max-min) + min;
 		return value;
 	}
 	

@@ -1,10 +1,10 @@
 package edu.neu.csye6200.cacrystal;
 
-public class CARuleHex1 extends CARule2 {
+public class CARuleHex1 extends CARule2 { //extended class for rule Hex-1 
 
 	@Override
 	public CAFlake getNextFlake(CAFlake previousFlake) {
-		CAFlake nextFlake = new CAFlake(previousFlake.getFlake()[0].length, previousFlake.getFlake().length);
+		CAFlake nextFlake = new CAFlake(previousFlake.getFlake()[0].length);
 		
 		for(int i = 1 ; i < nextFlake.getFlake().length -1 ;i++ ){
 			for (int j = 1; j < nextFlake.getFlake()[i].length -1; j++) {
@@ -23,10 +23,12 @@ public class CARuleHex1 extends CARule2 {
 				int position = j%2; //tells if its even column or odd
 				boolean returnedValue = returnFlakeCellWithNeighoubrs(top, topLeft, topRight, bottom, bottomLeft, bottomRight, left, right, position);
 				int cellColorValue = 0;
+				int classiqueColorValue = 0;
 				if(returnedValue == true){
 					int xlon = nextFlake.getFlake()[0].length;
 					int ylon = nextFlake.getFlake().length;
-					cellColorValue = super.cellColorGenerator(xlon/2,ylon/2,j,i,xlon,ylon);
+					cellColorValue = super.cellColorGenerator();
+					classiqueColorValue = super.cellColorGenerator(xlon/2,ylon/2,j,i,xlon,ylon);
 					if(i == 1 || j == 1){
 						System.out.println("breaking");
 						return previousFlake;
@@ -35,10 +37,12 @@ public class CARuleHex1 extends CARule2 {
 				if(previousFlake.getFlake()[i][j].isState() == true){
 					nextFlake.getFlake()[i][j].setState(true);
 					nextFlake.getFlake()[i][j].setValue(previousFlake.getFlake()[i][j].getValue());
+					nextFlake.getFlake()[i][j].setClassiqueValue(previousFlake.getFlake()[i][j].getClassiqueValue());
 				}
 				else{
 					nextFlake.getFlake()[i][j].setState(returnedValue);
 					nextFlake.getFlake()[i][j].setValue(cellColorValue);
+					nextFlake.getFlake()[i][j].setClassiqueValue(classiqueColorValue);
 				}
 			}
 		}

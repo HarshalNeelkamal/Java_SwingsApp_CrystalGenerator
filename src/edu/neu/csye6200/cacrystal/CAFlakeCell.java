@@ -3,10 +3,12 @@ package edu.neu.csye6200.cacrystal;
 public class CAFlakeCell {
 	private boolean state;
 	private int value;
+	private int classiqueValue;
 
 	public CAFlakeCell() {
 		this.state = false;
-		this.value = 0;
+		this.value = 0; //for colour purpose
+		this.classiqueValue = 0; //for colour purpose
 	}
 	
 	
@@ -17,6 +19,12 @@ public class CAFlakeCell {
 	}
 	
 	
+	public int getClassiqueValue() {
+		return classiqueValue;
+	}
+	public void setClassiqueValue(int classiqueValue) {
+		this.classiqueValue = classiqueValue;
+	}
 	public void setState(boolean state) {
 		this.state = state;
 	}
